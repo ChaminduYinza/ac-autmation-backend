@@ -28,14 +28,14 @@ module.exports.updateOne = (did, ac) => {
                 } else if (acResult == null || acResult == undefined) {
                     reject("Invalid ac id");
                 } else {
-                    if (ac.roomTemperature) {
+                    if (ac.roomTemperature && acResult.roomTemperatureHistory.length > 0 && acResult.roomTemperatureHistory[acResult.roomTemperatureHistory.length - 1] !== ac.roomTemperature) {
                         acResult.roomTemperatureHistory.push(ac.roomTemperature);
                         ac.roomTemperatureHistory = acResult.roomTemperatureHistory;
                     }
                     acModel.findOneAndUpdate(
-                        {did:did},
+                        { did: did },
                         ac,
-                        { safe: true },
+                        { new: true, safe: true },
                         (error, updatedAC) => {
                             if (error) {
                                 reject(error);
@@ -43,8 +43,13 @@ module.exports.updateOne = (did, ac) => {
                                 reject("Invalid ac ID");
                             } else {
                                 if (updatedAC.age && (updatedAC.comfortableTemperature === 0 || !updatedAC.comfortableTemperature)) {
-                                    updatedAC.comfortableTemperature = _.find(acConfig.ageMapping,
-                                        { ageGroup: Math.ceil((updatedAC.age + 1) / 10) * 10 }).temperature
+                                    updatedAC.comfortableTemperature = (_.find(acConfig.ageMapping,
+                                        { ageGroup: Math.ceil((updatedAC.age + 1) / 10) * 10 }).temperature)
+                                }
+                                if (updatedAC.comfortableTemperature - (updatedAC.noOfPersons ? updatedAC.noOfPersons : 0) > acConfig.minValue) {
+                                    updatedAC.comfortableTemperature = updatedAC.comfortableTemperature - (updatedAC.noOfPersons ? updatedAC.noOfPersons : 0)
+                                } else {
+                                    updatedAC.comfortableTemperature = acConfig.minValue;
                                 }
                                 resolve(updatedAC);
                             }

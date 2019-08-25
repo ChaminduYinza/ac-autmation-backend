@@ -20,9 +20,9 @@ module.exports.save = (acObj) => {
 module.exports.updateOne = (did, light) => {
     return new Promise((resolve, reject) => {
         lightModel.findOneAndUpdate(
-            {did:did},
+            { did: did },
             light,
-            { safe: true },
+            { new: true, safe: true },
             (error, light) => {
                 if (error) {
                     reject(error);

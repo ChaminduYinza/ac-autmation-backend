@@ -4,6 +4,8 @@ config.pendingStatus = "Pending";
 config.approveStatus = "Approved";
 config.rejectedStatus = "Rejected";
 config.newStatus = "New";
+config.minValue = 14;
+config.maxValue = 29;
 config.ageMapping = [{
     ageGroup: 10,
     temperature: 25
