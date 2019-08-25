@@ -28,7 +28,7 @@ module.exports.updateOne = (did, ac) => {
                 } else if (acResult == null || acResult == undefined) {
                     reject("Invalid ac id");
                 } else {
-                    if (ac.roomTemperature && acResult.roomTemperatureHistory.length > 0 && acResult.roomTemperatureHistory[acResult.roomTemperatureHistory.length - 1] !== ac.roomTemperature) {
+                    if ((ac.roomTemperature && acResult.roomTemperatureHistory.length === 0) || ac.roomTemperature && acResult.roomTemperatureHistory.length > 0 && acResult.roomTemperatureHistory[acResult.roomTemperatureHistory.length - 1] !== ac.roomTemperature) {
                         acResult.roomTemperatureHistory.push(ac.roomTemperature);
                         ac.roomTemperatureHistory = acResult.roomTemperatureHistory;
                     }
