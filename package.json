@@ -13,7 +13,7 @@
     "google-auth-library": "^3.0.1",
     "joi": "^14.3.0",
     "jsonwebtoken": "^8.3.0",
-    "jwt-simple": "^0.5.1",
+    "jwt-simple": "^0.5.3",
     "lodash": "^4.17.15",
     "mongoose": "^5.2.8",
     "socket.io": "^2.1.1"
